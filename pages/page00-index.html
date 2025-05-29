@@ -1,0 +1,85 @@
+<html>
+<head>
+    <title>首頁</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<style>
+  #box1{
+    background-color: white;
+    border: red 2px solid;
+    border-radius: 10px;
+    padding: 10px;
+    width: 95%;
+    margin: 5px 10px;
+    box-shadow: 3px 3px 10px #FFB5B5
+  }
+  #box2{
+    background-color: white;
+    border: 2px solid;
+    border-radius: 10px;
+    padding: 10px;
+    width: 95%;
+    margin: 5px 10px;
+    box-shadow: 3px 3px 10px
+  }
+</style>
+
+<body>
+
+    <h3>🔊最新農業新聞</h3>
+    <div id="box1"></div>
+
+    <h3>🔆天氣資訊</h3>
+    <div id="box2"></div>
+
+</body>
+</html>
+
+<script>
+$(document).ready(function(){
+
+    $.ajax({
+      url:'https://data.moa.gov.tw/Service/OpenData/Agriculturalnews_agriRss.aspx?IsTransData=1&UnitId=F29',
+      type:'get',
+      dataType:'json',
+      success: function (info) {
+          console.log(info);
+
+          for(i=0;i<3;i++){
+
+              $('#box1').append(
+                "<ul>"+
+                "<li>"+info[i].pubDate+"<br>"+
+                "👉"+info[i].title+"</li>"+
+                "</ul>"
+              )
+          }
+      },
+      error: function (e) {
+          console.log("請求失敗");
+      }
+    });
+
+    $.ajax({
+      url:'https://data.moa.gov.tw/Service/OpenData/Agriculturalcoa_videoRss.aspx?IsTransData=1&UnitId=F35',
+      type:'get',
+      dataType:'json',
+      success:function(weather){
+          console.log(weather)
+          $('#box2').html('');
+            title=weather[0].title;
+            link=weather[0].link;
+            console.log(title)
+            console.log(link)
+
+          $('#box2').append(
+            "<p>"+"公告:  "+title+
+            "<a href='"+link+"' target='new'>"+"    ▶️  "+
+            "觀看氣象"+
+            "</a>"+
+            "</p>"
+          )
+      }
+    });
+});
+</script>

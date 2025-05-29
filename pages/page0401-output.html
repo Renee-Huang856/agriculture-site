@@ -1,0 +1,69 @@
+<html>
+  <head>
+    <title>農產品</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  </head>
+  <style>
+  .txtgreen{
+    font-size: 25px;
+    font-weight:bolder;
+    color: 	#007500
+  }
+  table,td{
+    border:1px dotted;
+    width: 100%;
+    text-align: center;
+    table-layout: fixed
+  }
+  thead{
+    background-color: #CEFFCE;
+    font-size: 15px;
+  }
+  td {padding: 5px;
+  }
+  </style>
+
+  <body>
+    <center>
+    <p class="txtgreen">農作物產量與產值</p>
+    <table>
+      <thead>
+        <tr>
+          <td>年度</td>
+          <td>作物名稱</td>
+          <td>產量</td>
+          <td>單價</td>
+          <td>產值</td>
+        </tr>
+      </thead>
+      <tbody id="info">
+      </tbody>
+    </table>
+  </center>
+  </body>
+</html>
+
+<script>
+$(document).ready(function(){
+  $.ajax({
+    url:'https://data.moa.gov.tw/Service/OpenData/TransService.aspx?UnitId=ABTXmIWuosiO&IsTransData=1',
+    type:'get',
+    dataType:'json',
+    success:function(output){
+            console.log(output)
+            data_len=output.length
+            console.log(data_len)
+
+            for(i=0;i<data_len;i++){
+                $("#info").append(
+                    "<tr><td>"+output[i].year+"</td><td>"+output[i].crop_name+"</td><td>"+output[i].output+"</td><td>"+output[i].price+"</td><td>"+output[i].output_value
++"</td></tr>"
+                )
+            }
+    },
+    error:function(e){
+            console("請求失敗")
+    }
+  });
+});
+</script>

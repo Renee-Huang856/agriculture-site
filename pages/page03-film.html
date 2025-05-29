@@ -1,0 +1,88 @@
+<html>
+  <head>
+    <title>農業天氣</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  </head>
+  <style>
+  .txtorange{
+    color:#844200;
+    font-size: 25px;
+    font-weight: bolder;
+  }
+  .tab{
+    width:100%
+    table-layout: auto;
+    border-collapse: collapse;
+  }
+  th,td{
+    border:1px orange dotted;
+    text-align: center;
+    padding: 10px;
+  }
+  td:nth-child(1) {
+  max-width: 40px;
+  }
+  td:nth-child(4) {
+  max-width: 40px;
+  }
+  .bg{
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    background-color: 	#FFDCB9;
+  }
+  </style>
+  <body>
+    <center>
+    <p class="txtorange">最新宣導影片</p>
+    <hr color="#642100" width=100% size="10px">
+    <table class="tab">
+      <thead class="bg">
+        <tr>
+          <td>影片編號</td>
+          <td>影片名稱</td>
+          <td>片長</td>
+          <td>影片分類</td>
+          <td>影片簡介</td>
+          <td>Youtube連結</td>
+        </tr>
+      </thead>
+      <tbody id="info" class="td">
+      </tbody>
+    </table>
+    </center>
+
+  </body>
+</html>
+<script>
+$(document).ready(function(){
+
+  $.ajax({
+      url:'https://data.moa.gov.tw/service/opendata/VirtualMuseumAgri.aspx?IsTransData=1&UnitId=382',
+      type:'get',
+      dataType:'json',
+      success:function(film){
+          console.log(film);
+          console.log(film[0]);
+          data_len=film.length
+          console.log(data_len)
+
+          for(i=0;i<data_len;i++){
+              $('#info').append(
+                  "<tr>"+
+                  "<td>"+film[i].影片編號+"</td>"+
+                  "<td>"+film[i].影片名稱+"</td>"+
+                  "<td>"+film[i].片長+"</td>"+
+                  "<td>"+film[i].影片分類+"</td>"+
+                  "<td>"+film[i].影片簡介+"</td>"+
+                  "<td><a href='"+film[i].Youtube連結+"' target='new'>"+film[i].Youtube連結+"</a></td>"+
+                  "</tr>"
+              )
+          }
+      },
+      error: function(e){
+          console.log("請求失敗");
+      }
+  });
+});
+</script>

@@ -1,0 +1,97 @@
+<html>
+  <head>
+    <title>農產品</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  </head>
+  <style>
+  .txtyellow{
+    font-size: 25px;
+    font-weight:bolder;
+    color: 	#5B4B00
+  }
+  .tab{
+    table-layout: auto;
+  }
+  td{
+    border:1px dotted;
+    width: 100%;
+    text-align: center;
+    font-size: 10px;
+    padding: 3px;
+  }
+  thead{
+    font-weight: bolder;
+    background-color: #FFED97;
+  }
+  td:nth-child(1) {
+  max-width: 100px;
+  }
+
+  </style>
+  <body>
+    <center>
+    <p class="txtyellow">農作物每月產地價格表</p>
+    <table class="tab">
+      <thead>
+        <tr>
+          <td>作物</td>
+          <td>年份</td>
+          <td>1月價格</td>
+          <td>2月價格</td>
+          <td>3月價格</td>
+          <td>4月價格</td>
+          <td>5月價格</td>
+          <td>6月價格</td>
+          <td>7月價格</td>
+          <td>8月價格</td>
+          <td>9月價格</td>
+          <td>10月價格</td>
+          <td>11月價格</td>
+          <td>12月價格</td>
+        </tr>
+      </thead>
+      <tbody id="info">
+      </tbody>
+    </table>
+  </center>
+  </body>
+</html>
+
+<script>
+$(document).ready(function(){
+  $.ajax({
+    url:'https://data.moa.gov.tw/Service/OpenData/DataFileService.aspx?UnitId=652&IsTransData=1',
+    type:'get',
+    dataType:'json',
+    success:function(price){
+            console.log(price)
+            data_len=price.length
+            console.log(data_len)
+
+            for(i=0;i<data_len;i++){
+                $("#info").append(
+                    "<tr>"+
+                    "<td>"+price[i]["作物"]+"</td>"+
+                    "<td>"+price[i]["年份"]+"</td>"+
+                    "<td>"+price[i]["1月價格"]+"</td>"+
+                    "<td>"+price[i]["2月價格"]+"</td>"+
+                    "<td>"+price[i]["3月價格"]+"</td>"+
+                    "<td>"+price[i]["4月價格"]+"</td>"+
+                    "<td>"+price[i]["5月價格"]+"</td>"+
+                    "<td>"+price[i]["6月價格"]+"</td>"+
+                    "<td>"+price[i]["7月價格"]+"</td>"+
+                    "<td>"+price[i]["8月價格"]+"</td>"+
+                    "<td>"+price[i]["9月價格"]+"</td>"+
+                    "<td>"+price[i]["10月價格"]+"</td>"+
+                    "<td>"+price[i]["11月價格"]+"</td>"+
+                    "<td>"+price[i]["12月價格"]+"</td>"+
+                    "</tr>"
+                )
+            }
+    },
+    error:function(e){
+            console("請求失敗")
+    }
+  });
+});
+</script>

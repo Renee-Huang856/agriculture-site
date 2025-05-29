@@ -1,0 +1,63 @@
+<html>
+<head>
+    <title>農業新聞</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<style>
+.table,td{
+  padding:10px;
+}
+.textfont{
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center;
+  background-color: 	#FFD2D2;
+}
+</style>
+<body>
+  <center>
+  <u><b style='font-size:30px;color:red'>農業新聞快報</b></u>
+  <table border="1">
+    <tr class="textfont">
+        <td>標題</td>
+        <td>連結</td>
+        <td>內容</td>
+        <td>發布日期</td>
+    </tr>
+
+    <tbody id="row">
+    </tbody>
+    </table>
+  </center>
+</body>
+</html>
+
+<script>
+$(document).ready(function(){
+
+    $.ajax({
+      url:'https://data.moa.gov.tw/Service/OpenData/Agriculturalnews_agriRss.aspx?IsTransData=1&UnitId=F29',
+      type:'get',
+      dataType:'json',
+      success: function (info) {
+          total_len=info.length;
+          console.log(total_len);
+
+          for(i=0;i<total_len;i++){
+
+              $('#row').append(
+                "<tr>"+
+                "<td>"+info[i].title+"</td>"+
+                "<td><a href='"+info[i].link+"' target='new'>"+info[i].link+"</a></td>"+
+                "<td>"+info[i].description+"</td>"+
+                "<td>"+info[i].pubDate+"</td>"+
+                "</tr>"
+              )
+          }
+      },
+      error: function (e) {
+          console.log("請求失敗");
+      }
+    });
+});
+</script>

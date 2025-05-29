@@ -1,0 +1,76 @@
+<html>
+  <head>
+    <title>農業天氣</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  </head>
+  <style>
+  .txtblue{
+    color:	#0000C6;
+    font-size: 25px;
+    font-weight: bolder;
+  }
+
+  .table,td{
+    border:1px gray dotted;
+    width: 100%;
+    text-align: center;
+    table-layout: fixed
+  }
+
+  .textfont{
+    font-size: 23px;
+    font-weight: bold;
+    text-align: center;
+    background-color: 	#CAFFFF;
+  }
+  </style>
+  <body>
+    <center>
+    <p class="txtblue">農業天氣·每日更新</p>
+    <table class="table">
+      <tr class="textfont">
+        <td>標題</td>
+        <td>圖片路徑</td>
+        <td>連結</td>
+      </tr>
+      <tbody id="row">
+      </tbody>
+    </table>
+    </center>
+
+  </body>
+</html>
+<script>
+$(document).ready(function(){
+  <!--$("#row").html("<td>123</td>")-->
+  $.ajax({
+      url:'https://data.moa.gov.tw/Service/OpenData/Agriculturalcoa_videoRss.aspx?IsTransData=1&UnitId=F35',
+      type:'get',
+      dataType:'json',
+      success:function(weather){
+          console.log(weather)
+          data_len=weather.length
+          console.log(data_len)
+
+
+          for(i=0;i<data_len;i++){
+            $("#row").append(
+                "<tr>"+
+                "<td>"+weather[i].title+"</td>"+
+                "<td><a href='"+weather[i].picimg1+"' target='new'>"+
+                  "<img src='"+weather[i].picimg1+"'>"+
+                "</a></td>"+
+                "<td><a href='"+weather[i].link+"' target='new'>"+
+                "氣象說明"+
+                "</a></td>"+
+                "</tr>"
+            )
+          }
+
+      },
+      error: function(e){
+          console.log("請求失敗");
+      }
+  });
+});
+</script>
